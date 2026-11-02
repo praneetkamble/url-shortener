@@ -1,0 +1,19 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:shortener;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DB_CLOSE_DELAY=-1
+    username: sa
+    password:
+  cache:
+    type: simple
+
+management:
+  health:
+    redis:
+      enabled: false
+
+shortener:
+  base-url: http://short.test
+  rate-limit:
+    store: memory
+    max-requests: 5
+    window: 1m
