@@ -1,0 +1,45 @@
+spring:
+  application:
+    name: url-shortener
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/shortener}
+    username: ${DB_USER:shortener}
+    password: ${DB_PASSWORD:shortener}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate.jdbc.time_zone: UTC
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+  cache:
+    type: redis
+  flyway:
+    enabled: true
+
+server:
+  port: ${PORT:8080}
+  forward-headers-strategy: framework
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+
+shortener:
+  # Public base URL used when building the returned short link.
+  base-url: ${BASE_URL:http://localhost:8080}
+  cache-ttl: 1h
+  rate-limit:
+    # "redis" shares counters between instances; "memory" is per-instance.
+    store: ${RATE_LIMIT_STORE:redis}
+    max-requests: 30
+    window: 1m
